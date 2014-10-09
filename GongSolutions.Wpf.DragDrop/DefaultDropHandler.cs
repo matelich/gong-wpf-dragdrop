@@ -22,6 +22,8 @@ namespace GongSolutions.Wpf.DragDrop
 
     public virtual void Drop(IDropInfo dropInfo)
     {
+      if (dropInfo.DragInfo == null)
+        return;
       var insertIndex = dropInfo.InsertIndex;
       var destinationList = GetList(dropInfo.TargetCollection);
       var data = ExtractData(dropInfo.Data);
@@ -49,13 +51,10 @@ namespace GongSolutions.Wpf.DragDrop
         }
       }
       else {
-        var sourceList = GetList(dropInfo.DragInfo.SourceCollection);
-        if (sourceList[0] is ICloneable) {
-          var clones = new ArrayList();
-          foreach (ICloneable o in data) {
-            clones.Add(o.Clone());
-          }
-          data = clones;
+        var sourceList = GetList(dropInfo.DragInfo.SourceItems);
+        var clones = sourceList.OfType<ICloneable>();
+        if (clones.Any()) {
+          data = clones.Select(c => c.Clone());
         }
       }
 
@@ -106,11 +105,20 @@ namespace GongSolutions.Wpf.DragDrop
 
     public static IList GetList(IEnumerable enumerable)
     {
-      if (enumerable is ICollectionView) {
+      if (enumerable is ICollectionView)
+      {
         return ((ICollectionView)enumerable).SourceCollection as IList;
-      } else {
-        return enumerable as IList;
       }
+      var ilist = enumerable as IList;
+      if (ilist == null)
+      {
+        ilist = new ArrayList();
+        foreach (var e in enumerable)
+        {
+          ilist.Add(e);
+        }
+      }
+      return ilist;
     }
 
     protected static bool IsChildOf(UIElement targetItem, UIElement sourceItem)

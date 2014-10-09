@@ -779,6 +779,9 @@ namespace GongSolutions.Wpf.DragDrop
 
     private static void DropTarget_PreviewDragOver(object sender, DragEventArgs e)
     {
+      if (m_DragInfo == null)
+        return; //this drag event is not from Gong
+
       var elementPosition = e.GetPosition((IInputElement)sender);
       if (HitTestUtilities.HitTest4Type<ScrollBar>(sender, elementPosition)
           || HitTestUtilities.HitTest4GridViewColumnHeader(sender, elementPosition)
