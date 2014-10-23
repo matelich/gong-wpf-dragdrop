@@ -657,7 +657,8 @@ namespace GongSolutions.Wpf.DragDrop
           || HitTestUtilities.HitTest4GridViewColumnHeader(sender, elementPosition)
           || HitTestUtilities.HitTest4DataGridTypes(sender, elementPosition)
           || HitTestUtilities.IsNotPartOfSender(sender, e)
-          || GetDragSourceIgnore((UIElement)sender)) {
+          || GetDragSourceIgnore((UIElement)sender)
+          || (e.OriginalSource is UIElement && GetDragSourceIgnore((UIElement)e.OriginalSource))) {
         m_DragInfo = null;
         return;
       }
