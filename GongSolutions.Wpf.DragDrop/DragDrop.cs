@@ -272,12 +272,25 @@ namespace GongSolutions.Wpf.DragDrop
 
     public static bool GetDragSourceIgnore(UIElement target)
     {
-      return (bool)target.GetValue(DragSourceIgnoreProperty);
+       return (bool)target.GetValue(DragSourceIgnoreProperty);
     }
 
     public static void SetDragSourceIgnore(UIElement target, bool value)
     {
-      target.SetValue(DragSourceIgnoreProperty, value);
+       target.SetValue(DragSourceIgnoreProperty, value);
+    }
+
+    public static readonly DependencyProperty DropParentScrollProperty =
+      DependencyProperty.RegisterAttached("DropParentScroll", typeof(bool), typeof(DragDrop), new PropertyMetadata(false));
+
+    public static bool GetDropParentScroll(UIElement target)
+    {
+       return (bool)target.GetValue(DropParentScrollProperty);
+    }
+
+    public static void SetDropParentScroll(UIElement target, bool value)
+    {
+       target.SetValue(DropParentScrollProperty, value);
     }
 
     /// <summary>
@@ -585,7 +598,13 @@ namespace GongSolutions.Wpf.DragDrop
 
     private static void Scroll(DependencyObject o, DragEventArgs e)
     {
-      var scrollViewer = o.GetVisualDescendent<ScrollViewer>();
+       ScrollViewer scrollViewer = null;
+
+       UIElement dropelement = o as UIElement;
+       if (dropelement != null && GetDropParentScroll(dropelement))
+          scrollViewer = o.GetVisualAncestor<ScrollViewer>();
+       else
+          scrollViewer = o.GetVisualDescendent<ScrollViewer>();
 
       if (scrollViewer != null) {
         var position = e.GetPosition(scrollViewer);

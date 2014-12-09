@@ -39,7 +39,50 @@
   </Window.DataContext>
 
   <TabControl TabStripPlacement="Left">
-    <TabItem Header="Mixed Types, Filtering">
+    <!--<TabItem Header="Interact with non-gong">
+      
+    </TabItem>-->
+        <TabItem Header="Parent ScrollViewer">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition />
+                    <ColumnDefinition />
+                </Grid.ColumnDefinitions>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition />
+                </Grid.RowDefinitions>
+
+                <TextBlock Grid.Row="0"
+                   Grid.ColumnSpan="2"
+                   Margin="0,8,0,8"
+                   TextWrapping="Wrap">
+                    Demonstrates non-scrolling on the left and new property on the right
+                </TextBlock>
+
+                <ScrollViewer Grid.Column="0"
+                         Grid.Row="1"
+                         >
+                    <ListBox ItemsSource="{Binding Collection1}"
+                         SelectionMode="Extended"
+                         dd:DragDrop.IsDragSource="True"
+                         dd:DragDrop.IsDropTarget="True"
+                         dd:DragDrop.UseDefaultEffectDataTemplate="True"
+                         dd:DragDrop.DragAdornerTemplate="{StaticResource DragAdorner}" />
+                </ScrollViewer>
+                <ScrollViewer Grid.Column="1"
+                         Grid.Row="1"
+                         >
+                    <ListBox ItemsSource="{Binding Collection1}"
+                             dd:DragDrop.IsDragSource="True"
+                             dd:DragDrop.IsDropTarget="True"
+                             dd:DragDrop.DragAdornerTemplate="{StaticResource DragAdorner}" 
+                             dd:DragDrop.DropParentScroll="True"
+                             />
+                </ScrollViewer>
+            </Grid>
+        </TabItem>
+        <TabItem Header="Mixed Types, Filtering">
       <Grid>
         <Grid.ColumnDefinitions>
           <ColumnDefinition />
@@ -169,7 +212,7 @@
                  SelectionMode="Extended"
                  dd:DragDrop.IsDragSource="True"
                  dd:DragDrop.IsDropTarget="True"
-                 dd:DragDrop.DragAdornerTemplate="{StaticResource DragAdorner}"
+                 dd:DragDrop.UseDefaultDragAdorner="True"
                  MouseDoubleClick="Control_OnMouseDoubleClick" />
         <ListBox Grid.Column="1"
                  Grid.Row="1"
